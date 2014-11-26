@@ -11,6 +11,10 @@ get '/api' do
 	send_file File.expand_path('index.html', settings.public_folder)
 end
 
+get '/api/' do
+	send_file File.expand_path('index.html', settings.public_folder)
+end
+
 get '/api/lista.json' do
 	data = AEE_API.new()
 	content_type :json
