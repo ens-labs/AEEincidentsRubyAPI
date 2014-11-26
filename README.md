@@ -3,6 +3,7 @@ AEEincidentsRubyAPI
 
 This is a intermediate API, it connects to a Web Service that AEE has and it transforms that ugly XML into a 
 beautiful JSON for you to work with.
+Link: https://aeeapi.herokuapp.com/api/
 
 Requirements
 =============
