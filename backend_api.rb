@@ -5,7 +5,7 @@ class AEE_API
 	def get_lista
 		aee_client = Savon.client(wsdl: 'http://wss.prepa.com/services/BreakdownReport?wsdl')
 		breakdownSummary = aee_client.call(:get_breakdowns_summary)
-		hashtable = breakdownSummary.body
+	 	hashtable = breakdownSummary.body
 		hash_pueblo = Hash.new
 
 		hashtable.each do |key, value|
@@ -13,7 +13,6 @@ class AEE_API
 			#puts "Pueblos disponibles: "
 			for cada_pueblo in 1..cantidad_de_pueblos
 				cada_pueblo -= 1
-				hash_pueblo = {}
 				for variable in 0..cada_pueblo
 					hash_pueblo[variable] = value[:return][variable][:r1_town_or_city]
 				end
@@ -33,12 +32,19 @@ class AEE_API
 			cantidad_averias_pueblo = value[:return].length
 			# Checks if its an array of hashes or a hash
 			if value[:return].kind_of?(Array)
+				hash_hash = Hash.new
 				for averias in 1..cantidad_averias_pueblo
 					averias -= 1
-					hash_pueblo[averias] = value[:return][averias][:r1_town_or_city] +" "+ value[:return][averias][:r2_area] +" "+ value[:return][averias][:r3_status] +" "+ value[:return][averias][:r4_last_update]
+					hash_hash["Area: "] = value[:return][averias][:r2_area]
+					hash_hash["Status: "] = value[:return][averias][:r3_status]
+					hash_hash["Last Update: "] = value[:return][averias][:r4_last_update]
+					hash_pueblo["#{value[:return][averias][:r1_town_or_city]}"] = hash_hash
 				end
 			else
-				hash_pueblo[0] = value[:return][:r1_town_or_city] +" "+ value[:return][:r2_area] +" "+ value[:return][:r3_status] +" "+ value[:return][:r4_last_update]
+				hash_hash["Area: "] = value[:return][:r2_area]
+				hash_hash["Status: "] = value[:return][:r3_status]
+				hash_hash["Last Update: "] = value[:return][:r4_last_update]
+				hash_pueblo["#{value[:return][:r1_town_or_city]}"] = hash_hash
 			end
 		end
 		return hash_pueblo.to_json
