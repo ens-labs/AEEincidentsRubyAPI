@@ -75,7 +75,11 @@ class AEE_API
 				hash_averia = Array.new
 				for averias in 1..cantidad_averias_pueblo
 					averias -= 1
-					hash_averia[averias] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r2_area] 
+					hash_averias = Hash.new
+					hash_averias["Area:"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r2_area]
+					hash_averias["Status:"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r3_status]
+					hash_averias["Last Update:"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r4_last_update]
+					hash_averia[averias] = hash_averias 
 				end
 				hash_pueblo["#{data[:get_breakdowns_by_town_or_city_response][:return][averias][:r1_town_or_city]}"] = hash_averia
 			else

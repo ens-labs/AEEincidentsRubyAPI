@@ -28,7 +28,7 @@ The API has 3 main endpoints, at the moment the app does not serve any HTML or a
 
 Work in Progress
 =================
-The endpoint **localhost:4567/api/pueblo_especifico.json** needs some organization with the data, so Work in progress.
+* Web App
 
 
 License
