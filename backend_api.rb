@@ -54,6 +54,7 @@ class AEE_API
 		aee_url = 'http://wss.prepa.com/services/BreakdownReport?wsdl'
 		pueblos = Array.new
 		hash_pueblo = Hash.new
+		hash_averia = Hash.new
 
 		aee_client = Savon.client(wsdl: aee_url)
 		breakdownSummary = aee_client.call(:get_breakdowns_summary)
