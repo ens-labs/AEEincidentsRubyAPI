@@ -29,7 +29,7 @@ The API has 3 main endpoints, at the moment the app does not serve any HTML or a
 Work in Progress
 =================
 * Web App
-
+* The endpoint **/api/all_averias.json** needs to ve fixed when handling a pueblo with just one averia
 
 License
 ============
