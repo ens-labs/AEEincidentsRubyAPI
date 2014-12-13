@@ -6,16 +6,19 @@ class AEE_API
 		aee_client = Savon.client(wsdl: 'http://wss.prepa.com/services/BreakdownReport?wsdl')
 		breakdownSummary = aee_client.call(:get_breakdowns_summary)
 	 	hashtable = breakdownSummary.body
-		pueblos = Array.new
+		array_info = Array.new
 
 		hashtable.each do |key, value|
 			cantidad_de_pueblos = value[:return].length
 			for cada_pueblo in 1..cantidad_de_pueblos
 				cada_pueblo -= 1
-				pueblos.push value[:return][cada_pueblo][:r1_town_or_city]
+				info = Hash.new
+				info["Pueblo"] = value[:return][cada_pueblo][:r1_town_or_city]
+				info["Cantidad de averias"] = value[:return][cada_pueblo][:r2_total_breakdowns]
+				array_info.push info
 			end
 		end
-		return pueblos.to_json
+		return array_info.to_json
 	end
 
 	def pueblo_especifico(pueblito)
