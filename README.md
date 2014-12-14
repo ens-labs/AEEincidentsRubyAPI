@@ -17,13 +17,13 @@ Endpoints
 
 The API has 3 main endpoints, at the moment the app does not serve any HTML or anything like that.
 
-1. This endpoints gives you a list of the pueblos with data at the moment. 
+1. This endpoint gives you a list of the pueblos and the number of averia they have at the moment. 
 	* **localhost:4567/api/lista.json**
-2. This endpoints gives you the data for a specific pueblo. Just replace the text for a pueblo. 
+2. This endpoint gives you the data for a specific pueblo. Just replace the **comment** for a pueblo. 
 	* **localhost:4567/api/pueblo_especifico.json?pueblo=HERE_GOES_A_PUEBLO**  
 	* Example: **localhost:4567/api/pueblo_especifico.json?pueblo=san juan**. 
 	* BTW, it can read pueblos with space. Example: aguas buenas, san juan, trujillo alto etc..
-3. This endpoint gives you all the pueblos with all the averias. All the information, we can say. 
+3. This endpoint gives you all the pueblos with all the averias and their information. All the information, we can say. 
 	* **localhost:4567/api/all_averias.json**
 
 Work in Progress
