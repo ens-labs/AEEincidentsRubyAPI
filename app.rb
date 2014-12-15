@@ -1,5 +1,10 @@
 require 'sinatra'
+require 'sinatra/cross_origin'
 require_relative 'backend_api'
+
+configure do
+  enable :cross_origin
+end
 
 data = AEE_API.new()
 set :public_folder, File.dirname(__FILE__) + '/public'
