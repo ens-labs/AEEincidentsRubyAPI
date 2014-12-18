@@ -50,7 +50,7 @@ class AEE_API
 				hash_pueblo = Hash.new
 				array_averia = Array.new
 				hash_averia["Area"] = value[:return][:r2_area]
-				hash_averia["Statu:"] = value[:return][:r3_status]
+				hash_averia["Status"] = value[:return][:r3_status]
 				hash_averia["Last Update"] = value[:return][:r4_last_update]
 				array_averia.push hash_averia
 				hash_pueblo["Pueblo"] = value[:return][:r1_town_or_city]
