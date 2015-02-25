@@ -2,15 +2,14 @@ require 'savon'
 require 'json'
 
 class AEE_API
-	def get_lista
+	def get_lista()
 		aee_client = Savon.client(wsdl: 'http://wss.prepa.com/services/BreakdownReport?wsdl')
 		breakdownSummary = aee_client.call(:get_breakdowns_summary)
 	 	hashtable = breakdownSummary.body
 		array_info = Array.new
 
 		hashtable.each do |key, value|
-			cantidad_de_pueblos = value[:return].length
-			(0).upto(cantidad_de_pueblos) do |cada_pueblo|
+			(0).upto(value[:return].size) do |cada_pueblo|
 				info = Hash.new
 				info["Pueblo"] = value[:return][cada_pueblo][:r1_town_or_city]
 				info["Cantidad de averias"] = value[:return][cada_pueblo][:r2_total_breakdowns]
@@ -32,7 +31,7 @@ class AEE_API
 			if value[:return].kind_of?(Array)
 				hash_array_averias = Array.new
 				hash_pueblo = Hash.new
-				(0).upto(cantidad_averias_pueblo) do |averias|
+				(0).upto(value[:return].size) do |averias|
 					hash_averias = Hash.new
 					hash_averias["Area"] = value[:return][averias][:r2_area]
 					hash_averias["Status"] = value[:return][averias][:r3_status]
@@ -58,7 +57,7 @@ class AEE_API
 		return array_final.to_json
 	end
 
-	def all_averias
+	def all_averias()
 		aee_url = 'http://wss.prepa.com/services/BreakdownReport?wsdl'
 		pueblos = Array.new
 		array_final = Array.new
@@ -68,8 +67,7 @@ class AEE_API
 		hashtable = breakdownSummary.body
 
 		hashtable.each do |key, value|
-			cantidad_de_pueblos = value[:return].length
-			for cada_pueblo in 0...cantidad_de_pueblos
+			(0).upto(value[:return].size) do |cada_pueblo|
 				pueblos.push value[:return][cada_pueblo][:r1_town_or_city]
 			end
 		end
