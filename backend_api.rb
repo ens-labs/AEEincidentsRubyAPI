@@ -9,8 +9,7 @@ class AEE_API
 		array_info = Array.new
 
 		hashtable.each do |key, value|
-			cantidad_de_pueblos = value[:return].length
-			for cada_pueblo in 0...cantidad_de_pueblos
+			for cada_pueblo in 0...value[:return].length
 				info = Hash.new
 				info["Pueblo"] = value[:return][cada_pueblo][:r1_town_or_city]
 				info["Cantidad de averias"] = value[:return][cada_pueblo][:r2_total_breakdowns]
@@ -28,12 +27,11 @@ class AEE_API
 		array_final = Array.new
 
 		hash_table.each do |key, value|
-			cantidad_averias_pueblo = value[:return].length
 			# Checks if its an array of hashes or a hash
 			if value[:return].kind_of?(Array)
 				hash_array_averias = Array.new
 				hash_pueblo = Hash.new
-				for averias in 0...cantidad_averias_pueblo
+				for averias in 0...value[:return].length
 					hash_averias = Hash.new
 					hash_averias["Area"] = value[:return][averias][:r2_area]
 					hash_averias["Status"] = value[:return][averias][:r3_status]
@@ -69,8 +67,7 @@ class AEE_API
 		hashtable = breakdownSummary.body
 
 		hashtable.each do |key, value|
-			cantidad_de_pueblos = value[:return].length
-			for cada_pueblo in 0...cantidad_de_pueblos
+			for cada_pueblo in 0...value[:return].length
 				pueblos.push value[:return][cada_pueblo][:r1_town_or_city]
 			end
 		end
@@ -79,10 +76,9 @@ class AEE_API
 			breakdownstuff = aee_client.call(:get_breakdowns_by_town_or_city, message: { "townOrCity" => value })
 			data = breakdownstuff.body
 			if data[:get_breakdowns_by_town_or_city_response][:return].kind_of?(Array)
-				cantidad_averias_pueblo = data[:get_breakdowns_by_town_or_city_response][:return].length
 				array_averias = Array.new
 				hash_pueblo_multi = Hash.new
-				for averias in 0...cantidad_averias_pueblo
+				for averias in 0...data[:get_breakdowns_by_town_or_city_response][:return].length
 					hash_averias = Hash.new
 					hash_averias["Area"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r2_area]
 					hash_averias["Status"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r3_status]
