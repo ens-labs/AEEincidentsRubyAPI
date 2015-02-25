@@ -2,7 +2,7 @@ require 'savon'
 require 'json'
 
 class AEE_API
-	def get_lista()
+	def get_lista_json()
 		aee_client = Savon.client(wsdl: 'http://wss.prepa.com/services/BreakdownReport?wsdl')
 		breakdownSummary = aee_client.call(:get_breakdowns_summary)
 	 	hashtable = breakdownSummary.body
@@ -76,10 +76,9 @@ class AEE_API
 			breakdownstuff = aee_client.call(:get_breakdowns_by_town_or_city, message: { "townOrCity" => value })
 			data = breakdownstuff.body
 			if data[:get_breakdowns_by_town_or_city_response][:return].kind_of?(Array)
-				cantidad_averias_pueblo = data[:get_breakdowns_by_town_or_city_response][:return].length
 				array_averias = Array.new
 				hash_pueblo_multi = Hash.new
-				for averias in 0...cantidad_averias_pueblo
+				(0).upto(data[:get_breakdowns_by_town_or_city_response][:return].size) do |averias|
 					hash_averias = Hash.new
 					hash_averias["Area"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r2_area]
 					hash_averias["Status"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r3_status]

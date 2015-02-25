@@ -23,7 +23,7 @@ end
 
 get '/api/lista.json' do
 	content_type :json
-	data.get_lista
+	data.get_lista_json
 end
 
 get '/api/pueblo_especifico.json' do
