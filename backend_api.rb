@@ -9,7 +9,7 @@ class AEE_API
 		array_info = Array.new
 
 		hashtable.each do |key, value|
-			for cada_pueblo in 0...value[:return].length
+			for cada_pueblo in 0...value[:return].size
 				info = Hash.new
 				info["Pueblo"] = value[:return][cada_pueblo][:r1_town_or_city]
 				info["Cantidad de averias"] = value[:return][cada_pueblo][:r2_total_breakdowns]
@@ -31,7 +31,7 @@ class AEE_API
 			if value[:return].kind_of?(Array)
 				hash_array_averias = Array.new
 				hash_pueblo = Hash.new
-				for averias in 0...value[:return].length
+				for averias in 0...value[:return].size
 					hash_averias = Hash.new
 					hash_averias["Area"] = value[:return][averias][:r2_area]
 					hash_averias["Status"] = value[:return][averias][:r3_status]
@@ -67,7 +67,7 @@ class AEE_API
 		hashtable = breakdownSummary.body
 
 		hashtable.each do |key, value|
-			for cada_pueblo in 0...value[:return].length
+			for cada_pueblo in 0...value[:return].size
 				pueblos.push value[:return][cada_pueblo][:r1_town_or_city]
 			end
 		end
@@ -78,7 +78,7 @@ class AEE_API
 			if data[:get_breakdowns_by_town_or_city_response][:return].kind_of?(Array)
 				array_averias = Array.new
 				hash_pueblo_multi = Hash.new
-				for averias in 0...data[:get_breakdowns_by_town_or_city_response][:return].length
+				for averias in 0...data[:get_breakdowns_by_town_or_city_response][:return].size
 					hash_averias = Hash.new
 					hash_averias["Area"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r2_area]
 					hash_averias["Status"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r3_status]
