@@ -2,7 +2,7 @@ require 'savon'
 require 'json'
 
 class AEE_API
-	def get_lista_json()
+	def get_lista_json
 		aee_client = Savon.client(wsdl: 'http://wss.prepa.com/services/BreakdownReport?wsdl')
 		breakdownSummary = aee_client.call(:get_breakdowns_summary)
 	 	hashtable = breakdownSummary.body
@@ -57,7 +57,7 @@ class AEE_API
 		return array_final.to_json
 	end
 
-	def all_averias()
+	def all_averias
 		aee_url = 'http://wss.prepa.com/services/BreakdownReport?wsdl'
 		pueblos = Array.new
 		array_final = Array.new
