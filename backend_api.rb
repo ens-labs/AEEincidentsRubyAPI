@@ -2,101 +2,65 @@ require 'savon'
 require 'json'
 
 class AEE_API
-	def get_lista_json
-		aee_client = Savon.client(wsdl: 'http://wss.prepa.com/services/BreakdownReport?wsdl')
-		breakdownSummary = aee_client.call(:get_breakdowns_summary)
-		array_info = Array.new
+	def list_of_breakdowns
+		aee_towns_client = Savon.client(wsdl: 'http://wss.prepa.com/services/BreakdownReport?wsdl')
+		aee_call = aee_towns_client.call(:get_breakdowns_summary)
 
-		breakdownSummary.body.each do |key, value|
-			(0).upto(value[:return].size - 1) do |cada_pueblo|
-				info = Hash.new
-				info["Pueblo"] = value[:return][cada_pueblo][:r1_town_or_city]
-				info["Cantidad de averias"] = value[:return][cada_pueblo][:r2_total_breakdowns]
-				array_info.push info
+		towns_summary = Array.new
+
+		aee_call.body.each do |k, v|
+			acs = v[:return]
+			for i in 0...acs.length
+				town_summary = ["Pueblo" => acs[i][:r1_town_or_city],
+												"Cantidad de averias" => acs[i][:r2_total_breakdowns]]
+				towns_summary.push town_summary
 			end
 		end
-		return array_info.to_json
+		return towns_summary
 	end
 
-	def pueblo_especifico(pueblito)
-		aee_client = Savon.client(wsdl: 'http://wss.prepa.com/services/BreakdownReport?wsdl')
-		breakdownstuff = aee_client.call(:get_breakdowns_by_town_or_city, message: { "townOrCity" => pueblito.upcase })
-		array_final = Array.new
-
-		breakdownstuff.body.each do |key, value|
-			# Checks if its an array of hashes or a hash
-			if value[:return].kind_of?(Array)
-				hash_array_averias = Array.new
-				hash_pueblo = Hash.new
-				for averias in 0...value[:return].size
-					hash_averias = Hash.new
-					hash_averias["Area"] = value[:return][averias][:r2_area]
-					hash_averias["Status"] = value[:return][averias][:r3_status]
-					hash_averias["Last Update"] = value[:return][averias][:r4_last_update]
-					hash_array_averias[averias] = hash_averias
-				end
-				hash_pueblo["Pueblo"] = value[:return][averias][:r1_town_or_city]
-				hash_pueblo["Averias"] = hash_array_averias
-				array_final.push hash_pueblo
-			else
-				hash_averia = Hash.new
-				hash_pueblo = Hash.new
-				array_averia = Array.new
-				hash_averia["Area"] = value[:return][:r2_area]
-				hash_averia["Status"] = value[:return][:r3_status]
-				hash_averia["Last Update"] = value[:return][:r4_last_update]
-				array_averia.push hash_averia
-				hash_pueblo["Pueblo"] = value[:return][:r1_town_or_city]
-				hash_pueblo["Averias"] = array_averia
-				array_final.push hash_pueblo
-			end
-		end
-		return array_final.to_json
+	def get_list
+		return list_of_breakdowns.to_json
 	end
 
-	def all_averias
-		aee_url = 'http://wss.prepa.com/services/BreakdownReport?wsdl'
-		pueblos = Array.new
-		array_final = Array.new
+	def specific_town(town, decs)
+		aee_towns_client = Savon.client(wsdl: 'http://wss.prepa.com/services/BreakdownReport?wsdl')
+		aee_call = aee_towns_client.call(:get_breakdowns_by_town_or_city, message: {"townOrCity" => town.upcase})
 
-		aee_client = Savon.client(wsdl: aee_url)
-		breakdownSummary = aee_client.call(:get_breakdowns_summary)
-
-		breakdownSummary.body.each do |key, value|
-			(0).upto(value[:return].length - 1) do |cada_pueblo|
-				pueblos.push value[:return][cada_pueblo][:r1_town_or_city]
-			end
-		end
-
-		pueblos.each do |value|
-			breakdownstuff = aee_client.call(:get_breakdowns_by_town_or_city, message: { "townOrCity" => value })
-			data = breakdownstuff.body
-			if data[:get_breakdowns_by_town_or_city_response][:return].kind_of?(Array)
-				array_averias = Array.new
-				hash_pueblo_multi = Hash.new
-				for averias in 0...data[:get_breakdowns_by_town_or_city_response][:return].size
-					hash_averias = Hash.new
-					hash_averias["Area"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r2_area]
-					hash_averias["Status"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r3_status]
-					hash_averias["Last Update"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r4_last_update]
-					array_averias[averias] = hash_averias 
+		aee_call.body.each do |k, v|
+			acs = v[:return]
+			town = Hash.new
+			if acs.kind_of?(Array)
+				breakdowns = Array.new
+				for brkdwn in 0...acs.length
+					breakdowns.push ["Area" => acs[brkdwn][:r2_area],
+													"Status" => acs[brkdwn][:r3_status],
+													"Last Update" => acs[brkdwn][:r4_last_update]]
 				end
-				hash_pueblo_multi["Pueblo"] = data[:get_breakdowns_by_town_or_city_response][:return][averias][:r1_town_or_city] 
-				hash_pueblo_multi["Averias"] = array_averias
-				array_final.push hash_pueblo_multi
+				town["Pueblo"] = acs[brkdwn][:r1_town_or_city]
+				town["Averias"] = breakdowns
+			 	decs ? (return town) : (return [town])
 			else
-				hash_averia = Hash.new
-				array_averia = Array.new
-				hash_pueblo = Hash.new
-				hash_averia["Area"] = data[:get_breakdowns_by_town_or_city_response][:return][:r2_area]
-				hash_averia["Status"] = data[:get_breakdowns_by_town_or_city_response][:return][:r3_status]
-				hash_averia["Last Update"] = data[:get_breakdowns_by_town_or_city_response][:return][:r3_status]
-				array_averia.push hash_averia
-				hash_pueblo["Pueblo"] = data[:get_breakdowns_by_town_or_city_response][:return][:r1_town_or_city]
-				hash_pueblo["Averias"] = array_averia
-				array_final.push hash_pueblo
+				breakdown = ["Area" => acs[:r2_area],
+										"Status" => acs[:r3_status],
+										"Last Update" => acs[:r4_last_update]]
+				town["Pueblo"] = acs[:r1_town_or_city]
+				town["Averias"] = breakdown
+				decs ? (return town) : (return [town])
 			end
 		end
-		return array_final.to_json
+	end
+
+	def get_specific_town(town)
+		return specific_town(town, false).to_json
+	end
+
+	def get_all_breakdowns
+		list = list_of_breakdowns
+		all_breakdowns = Array.new
+		for i in 0...list.length
+			all_breakdowns.push specific_town(list[i][0]["Pueblo"], true)
+		end
+		return all_breakdowns.to_json
 	end
 end

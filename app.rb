@@ -6,7 +6,8 @@ configure do
   enable :cross_origin
 end
 
-data = AEE_API.new()
+API = AEE_API.new()
+
 set :public_folder, File.dirname(__FILE__) + '/public'
 
 get '/' do
@@ -23,16 +24,15 @@ end
 
 get '/api/lista.json' do
 	content_type :json
-	data.get_lista_json
+	API.get_list
 end
 
 get '/api/pueblo_especifico.json' do
-	pueblito = params[:pueblo]
 	content_type :json
-	data.pueblo_especifico(pueblito)
+	API.get_specific_town(params[:pueblo])
 end
 
-get '/api/all_averias.json' do
+get '/api/todas_averias.json' do
 	content_type :json
-	data.all_averias
+	API.get_all_breakdowns
 end
