@@ -24,7 +24,7 @@ The API has 3 main endpoints, at the moment the app does not serve any HTML or a
 	* Example: **localhost:4567/api/pueblo_especifico.json?pueblo=san juan**.
 	* BTW, it can read pueblos with space. Example: aguas buenas, san juan, trujillo alto etc..
 3. This endpoint gives you all the pueblos with all the averias and their information. All the information, we can say.
-	* **localhost:4567/api/todas_averias.json**
+	* **localhost:4567/api/all_averias.json**
 
 Work in Progress
 =================

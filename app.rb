@@ -32,7 +32,7 @@ get '/api/pueblo_especifico.json' do
 	API.get_specific_town(params[:pueblo])
 end
 
-get '/api/todas_averias.json' do
+get '/api/all_averias.json' do
 	content_type :json
 	API.get_all_breakdowns
 end
