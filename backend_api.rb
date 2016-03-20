@@ -11,8 +11,8 @@ class AEE_API
 		aee_call.body.each do |k, v|
 			acs = v[:return]
 			for i in 0...acs.length
-				town_summary = ["Pueblo" => acs[i][:r1_town_or_city],
-												"Cantidad de averias" => acs[i][:r2_total_breakdowns]]
+				town_summary = {"Pueblo" => acs[i][:r1_town_or_city],
+												"Cantidad de averias" => acs[i][:r2_total_breakdowns]}
 				towns_summary.push town_summary
 			end
 		end
