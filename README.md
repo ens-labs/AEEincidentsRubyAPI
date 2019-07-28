@@ -1,4 +1,4 @@
-AEEincidentsRubyAPI
+AEEincidentsRubyAPI -> NO LONGER WORKS OR BEING MAINTAINED
 ================
 
 This is a intermediate API, it connects to a Web Service that AEE has and it transforms that ugly XML into a
@@ -7,7 +7,7 @@ Link: https://aeeapi.herokuapp.com/api/
 
 Requirements
 =============
-1. Ruby 1.9.3
+1. Ruby 2.6.0
 2. Sinatra
 3. Savon
 4. or just: **bundle install**
